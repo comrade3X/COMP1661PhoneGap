@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport"
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <meta name="author" content="Tien Dung">
+    <title>My Storage</title>
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+</head>
+
+<body>
+    <!-- ---------------------- -->
+    <!-- Home page -->
+    <!-- ---------------------- -->
+    <div data-role="page" id="home">
+        <div data-role="header">
+            <h2>My Storage</h2>
+        </div>
+
+        <div role="main" class="ui-content">
+            <div class="ui-field-contain">
+                 <input type="search" value="" placeholder="Find Storage..." id="txtSearch">
+            </div>
+            <div>
+                <a href="#create" class="ui-btn ui-btn-inline ui-mini ui-btn-icon-left ui-icon-plus">Create new</a>
+            </div>
+            <div>
+                <table data-role="table" id="listing-table" data-mode="columntoggle" data-filter="true"
+                    data-input="#txtSearch" class="ui-body-d ui-shadow table-stripe ui-responsive">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th data-priority="1">Acreage</th>
+                            <!-- <th data-priority="1"><abbr title="Rotten Tomato Rating">Rating</abbr></th> -->
+                            <th data-priority="1">Features</th>
+                            <th data-priority="1">Price</th>
+                            <th data-priority="4">Created Date</th>
+                            <th data-priority="5">Notes</th>
+                            <th data-priority="6">Reporter</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div data-role="footer">
+            <h4>Page Footer</h4>
+        </div>
+    </div>
+
+    <!-- ---------------------- -->
+    <!--Edit record page -->
+    <!-- ---------------------- -->
+    <div data-role="page" id="edit">
+        <div data-role="header">
+            <h2>My Storage</h2>
+            <a href="#home" class="ui-btn ui-btn-left ui-shadow ui-corner-all ui-icon-carat-l ui-btn-icon-notext"></a>
+            <button id="btn-delete"
+                class="ui-btn ui-icon-delete ui-btn-icon-left ui-btn-right ui-shadow-icon ui-btn-b">Delete</button>
+        </div>
+
+        <div role="main" class="ui-content">
+            <div>
+                <h3>Edit storeage</h3>
+            </div>
+            <form action="">
+                <input type="hidden" id="txtId" value="">
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Type:</label>
+                        <input type="text" id="txtType" value="">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Feature:</label>
+                        <input type="text" id="txtFeature" value="">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Acreage:</label>
+                        <input type="number" step="0.1" id="txtAcreage" value="">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Price:</label>
+                        <input type="number" step="0.1" id="txtPrice" value="">
+                    </div>
+                </div>
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Created Date:</label>
+                        <input type="date" id="txtCreatedDate" value="">
+                    </div>
+                </div>
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Notes:</label>
+                        <input type="text" id="txtNotes" value="">
+                    </div>
+                </div>
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Reporter:</label>
+                        <input type="text" id="txtReporter" value="">
+                    </div>
+                </div>
+            </form>
+
+            <div class="ui-field-contain">    
+                    <button type="submit" id="btn-update" class="ui-shadow ui-btn ui-corner-all">Update</button>
+            </div>
+        </div><!-- /content -->
+
+        <div data-role="footer">
+            <h4>Page Footer</h4>
+        </div>
+    </div>
+
+    <!-- ---------------------- -->
+    <!--Create new record page -->
+    <!-- ---------------------- -->
+    <div data-role="page" id="create">
+        <div data-role="header">
+            <h2>My Storage</h2>
+            <a href="#home" class="ui-btn ui-btn-left ui-shadow ui-corner-all ui-icon-carat-l ui-btn-icon-notext"></a>
+        </div>
+
+        <div role="main" class="ui-content">
+            <div>
+                <h3>Create new storeage</h3>
+            </div>
+            <form action="">
+                <input type="hidden" id="txtId" value="">
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Type:</label>
+                        <input type="text" id="txtType" value="" required>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Feature:</label>
+                        <input type="text" id="txtFeature" value="">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Acreage:</label>
+                        <input type="number" step="0.1" id="txtAcreage" value="">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Price:</label>
+                        <input type="number" step="0.1" id="txtPrice" value="">
+                    </div>
+                </div>
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Created Date:</label>
+                        <input type="date" id="txtCreatedDate" value="">
+                    </div>
+                </div>
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Notes:</label>
+                        <input type="text" id="txtNotes" value="">
+                    </div>
+                </div>
+                <div>
+                    <div class="ui-field-contain">
+                        <label>Reporter:</label>
+                        <input type="text" id="txtReporter" value="">
+                    </div>
+                </div>
+            </form>
+
+            <div class="ui-field-contain">    
+                    <button type="submit" id="submit-5" class="ui-shadow ui-btn ui-corner-all">Create</button>
+            </div>
+        </div><!-- /content -->
+
+        <div data-role="footer">
+            <h4>Page Footer</h4>
+        </div>
+    </div>
+
+    <!-- Mandatory Scripts -->
+    <script type="text/javascript" src="cordova.js"></script>
+
+    <!-- JQM Libraries -->
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="js/jquery.mobile-1.4.5.min.js"></script>
+
+    <!-- HTML WebSQL Helper -->
+    <script src="js/webSQL.js"></script>
+
+    <!-- Main JS -->
+    <script type="text/javascript" src="js/index.js"></script>
+    <!-- End Mandatory Scripts -->
+</body>
+
+</html>
