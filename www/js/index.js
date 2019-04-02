@@ -91,7 +91,7 @@ $(function () {
 
                 // app.deleteStorage(storeage);
                 // $.mobile.changePage('#home');
-
+                
             });
         },
         createSQLTable: function () {
@@ -206,15 +206,15 @@ $(function () {
     };
 
     function getStorageRec(formId) {
-	    var Storage = {
-		    Type: $('#' + formId + ' #txtType').val(),
-		    Acreage: $('#' + formId + ' #txtAcreage').val(),
-		    CreatedDate: $('#' + formId + ' #txtCreatedDate').val(),
-		    Features: $('#' + formId + ' #txtFeature').val(),
-		    Price: $('#' + formId + ' #txtPrice').val(),
-		    Notes: $('#' + formId + ' #txtNotes').val(),
-		    Reporter: $('#' + formId + ' #txtReporter').val()
-	    };
+        var Storage = {
+            Type: $('#' + formId + ' #txtType').val(),
+            Acreage: $('#' + formId + ' #txtAcreage').val(),
+            CreatedDate: $('#' + formId + ' #txtCreatedDate').val(),
+            Features: $('#' + formId + ' #txtFeature').val(),
+            Price: $('#' + formId + ' #txtPrice').val(),
+            Notes: $('#' + formId + ' #txtNotes').val(),
+            Reporter: $('#' + formId + ' #txtReporter').val()
+        }
 
         if (formId === 'form-edit') {
             Storage.Id = $('#' + formId + ' #txtId').val();
@@ -236,7 +236,7 @@ $(function () {
     document.addEventListener("deviceready", onDeviceReady, false);
 
     function onDeviceReady() {
-	    navigator.notification.beep(2);
+        navigator.notification.beep(2);
         app.init();
     }
 });
