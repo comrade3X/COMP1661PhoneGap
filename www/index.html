@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,10 +6,10 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
     <meta name="viewport"
-          content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
     <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
     <meta http-equiv="Content-Security-Policy"
-          content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+        content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
     <meta name="author" content="Tien Dung">
     <title>My Storage</title>
     <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
@@ -31,14 +31,14 @@
 
         <div role="main" class="ui-content">
             <div class="ui-field-contain">
-                <input type="search" value="" placeholder="Find Storage..." id="txtSearch">
+                 <input type="search" value="" placeholder="Find Storage..." id="txtSearch">
             </div>
             <div>
                 <a href="#create" class="ui-btn ui-btn-inline ui-mini ui-btn-icon-left ui-icon-plus">Create new</a>
             </div>
             <div>
                 <table data-role="table" id="listing-table" data-mode="columntoggle" data-filter="true"
-                       data-input="#txtSearch" class="ui-body-d ui-shadow table-stripe ui-responsive">
+                    data-input="#txtSearch" class="ui-body-d ui-shadow table-stripe ui-responsive">
                     <thead>
                         <tr>
                             <th>Type</th>
@@ -51,7 +51,9 @@
                             <th data-priority="6">Reporter</th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -69,9 +71,7 @@
             <h2>My Storage</h2>
             <a href="#home" class="ui-btn ui-btn-left ui-shadow ui-corner-all ui-icon-carat-l ui-btn-icon-notext"></a>
             <button id="btn-delete"
-                    class="ui-btn ui-icon-delete ui-btn-icon-left ui-btn-right ui-shadow-icon ui-btn-b">
-                Delete
-            </button>
+                class="ui-btn ui-icon-delete ui-btn-icon-left ui-btn-right ui-shadow-icon ui-btn-b">Delete</button>
         </div>
 
         <div role="main" class="ui-content">
@@ -84,7 +84,7 @@
                     <div class="ui-field-contain">
                         <label>Type<span>(*)</span>:</label>
                         <input type="text" id="txtType" value="" required placeholder="home, business,..."
-                               oninvalid="this.setCustomValidity('Types is required!')" oninput="setCustomValidity('')">
+                            oninvalid="this.setCustomValidity('Types is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
@@ -92,8 +92,8 @@
                     <div class="ui-field-contain">
                         <label>Feature<span>(*)</span>:</label>
                         <input type="text" id="txtFeature" value="" required
-                               placeholder="private space, sharing space,..."
-                               oninvalid="this.setCustomValidity('Feature is required!')" oninput="setCustomValidity('')">
+                            placeholder="private space, sharing space,..."
+                            oninvalid="this.setCustomValidity('Feature is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
@@ -101,7 +101,7 @@
                     <div class="ui-field-contain">
                         <label>Acreage<span>(*)</span>:</label>
                         <input type="number" step="0.1" id="txtAcreage" value="" required placeholder="100"
-                               oninvalid="this.setCustomValidity('Acreage is required!')" oninput="setCustomValidity('')">
+                            oninvalid="this.setCustomValidity('Acreage is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
@@ -109,7 +109,7 @@
                     <div class="ui-field-contain">
                         <label>Price<span>(*)</span>:</label>
                         <input type="number" step="0.1" id="txtPrice" value="" required placeholder="100"
-                               oninvalid="this.setCustomValidity('Price is required!')" oninput="setCustomValidity('')">
+                            oninvalid="this.setCustomValidity('Price is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
                 <div>
@@ -128,11 +128,11 @@
                     <div class="ui-field-contain">
                         <label>Reporter<span>(*)</span>:</label>
                         <input type="text" id="txtReporter" value="" required placeholder="admin"
-                               oninvalid="this.setCustomValidity('Reporter is required!')" oninput="setCustomValidity('')">
+                            oninvalid="this.setCustomValidity('Reporter is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
-                <div class="ui-field-contain">
-                    <button type="submit" id="btn-update" class="ui-shadow ui-btn ui-corner-all">Update</button>
+                <div class="ui-field-contain">    
+                        <button type="submit" id="btn-update" class="ui-shadow ui-btn ui-corner-all">Update</button>
                 </div>
             </form>
         </div><!-- /content -->
@@ -161,7 +161,7 @@
                     <div class="ui-field-contain">
                         <label>Type<span>(*)</span>:</label>
                         <input type="text" id="txtType" value="" required placeholder="home, business,..."
-                               oninvalid="this.setCustomValidity('Types is required!')" oninput="setCustomValidity('')">
+                            oninvalid="this.setCustomValidity('Types is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
@@ -169,8 +169,8 @@
                     <div class="ui-field-contain">
                         <label>Feature<span>(*)</span>:</label>
                         <input type="text" id="txtFeature" value="" required
-                               placeholder="private space, sharing space,..."
-                               oninvalid="this.setCustomValidity('Feature is required!')" oninput="setCustomValidity('')">
+                            placeholder="private space, sharing space,..."
+                            oninvalid="this.setCustomValidity('Feature is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
@@ -178,7 +178,7 @@
                     <div class="ui-field-contain">
                         <label>Acreage<span>(*)</span>:</label>
                         <input type="number" step="0.1" id="txtAcreage" value="" required placeholder="100"
-                               oninvalid="this.setCustomValidity('Acreage is required!')" oninput="setCustomValidity('')">
+                            oninvalid="this.setCustomValidity('Acreage is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
@@ -186,7 +186,7 @@
                     <div class="ui-field-contain">
                         <label>Price<span>(*)</span>:</label>
                         <input type="number" step="0.1" id="txtPrice" value="" required placeholder="100"
-                               oninvalid="this.setCustomValidity('Price is required!')" oninput="setCustomValidity('')">
+                            oninvalid="this.setCustomValidity('Price is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
                 <div>
@@ -205,11 +205,11 @@
                     <div class="ui-field-contain">
                         <label>Reporter<span>(*)</span>:</label>
                         <input type="text" id="txtReporter" value="" required placeholder="admin"
-                               oninvalid="this.setCustomValidity('Reporter is required!')" oninput="setCustomValidity('')">
+                            oninvalid="this.setCustomValidity('Reporter is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
-                <div class="ui-field-contain">
-                    <button type="submit" id="btn-create" class="ui-shadow ui-btn ui-corner-all">Create</button>
+                <div class="ui-field-contain">    
+                        <button type="submit" id="btn-create" class="ui-shadow ui-btn ui-corner-all">Create</button>
                 </div>
             </form>
 
@@ -240,7 +240,7 @@
                     <div class="ui-field-contain">
                         <label>Type<span>(*)</span>:</label>
                         <input type="text" id="txtType" value="" required placeholder="home, business,..."
-                               oninvalid="this.setCustomValidity('Types is required!')" oninput="setCustomValidity('')">
+                            oninvalid="this.setCustomValidity('Types is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
@@ -248,8 +248,8 @@
                     <div class="ui-field-contain">
                         <label>Feature<span>(*)</span>:</label>
                         <input type="text" id="txtFeature" value="" required
-                               placeholder="private space, sharing space,..."
-                               oninvalid="this.setCustomValidity('Feature is required!')" oninput="setCustomValidity('')">
+                            placeholder="private space, sharing space,..."
+                            oninvalid="this.setCustomValidity('Feature is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
@@ -257,7 +257,7 @@
                     <div class="ui-field-contain">
                         <label>Acreage<span>(*)</span>:</label>
                         <input type="number" step="0.1" id="txtAcreage" value="" required placeholder="100"
-                               oninvalid="this.setCustomValidity('Acreage is required!')" oninput="setCustomValidity('')">
+                            oninvalid="this.setCustomValidity('Acreage is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
@@ -265,7 +265,7 @@
                     <div class="ui-field-contain">
                         <label>Price<span>(*)</span>:</label>
                         <input type="number" step="0.1" id="txtPrice" value="" required placeholder="100"
-                               oninvalid="this.setCustomValidity('Price is required!')" oninput="setCustomValidity('')">
+                            oninvalid="this.setCustomValidity('Price is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
                 <div>
@@ -284,11 +284,11 @@
                     <div class="ui-field-contain">
                         <label>Reporter<span>(*)</span>:</label>
                         <input type="text" id="txtReporter" value="" required placeholder="admin"
-                               oninvalid="this.setCustomValidity('Reporter is required!')" oninput="setCustomValidity('')">
+                            oninvalid="this.setCustomValidity('Reporter is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
-                <div class="ui-field-contain">
-                    <button type="button" class="ui-btn ui-icon-edit ui-btn-icon-left">Edit</button>
+                <div class="ui-field-contain">    
+                    <button type="button" class="ui-btn ui-icon-edit ui-btn-icon-left">Edit</button>
                     <button type="button" id="btn-delete" class="ui-btn ui-icon-delete ui-btn-icon-left">Delete</button>
                 </div>
             </form>
