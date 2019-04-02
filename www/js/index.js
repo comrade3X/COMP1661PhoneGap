@@ -12,16 +12,19 @@ $(function () {
 
     var app = {
         init: function () {
-            // Open Web SQL database
+            // Database initialize    
             dbContext = SqlOpenDb(dbName);
-
-            // Create SQL table
             this.createSQLTable();
 
+            // Get list records in db
             this.getStorages();
 
+            /** ----------------------------- */
+            /** -- Binding page event -- */
+            /** ----------------------------- */
+
             // Listing click event
-            // Redirect to "Detail page"
+            // Redirect to "Edit page"
             $(document).on('click', '#listing-table a', function (e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
@@ -29,9 +32,9 @@ $(function () {
                 //get href of selected listview item and cleanse it
                 var id = $(this).data('id');
 
-                // Change view to "Detail page"
-                $('#detail').data('id', id);
-                $.mobile.changePage('#detail');
+                // Change view to "Edit page"
+                $('#edit').data('id', id);
+                $.mobile.changePage('#edit');
             });
 
             $(document).on('click', '#redirect-edit', function (e) {
@@ -44,9 +47,12 @@ $(function () {
                 // Change view to "Detail page"
                 $('#edit').data('id', param);
                 $.mobile.changePage('#edit');
-            });           
+            });
 
+            /** Page beforechange change event */
+            // Fetch data before page change
             $(document).on('pagebeforechange', function (e, data) {
+
                 //get "to page" name
                 var toPage = data.toPage[0].id;
 
@@ -65,36 +71,45 @@ $(function () {
                         app.getStorages();
                         break;
                     case 'create':
+                        // Clean all input 
                         $('#form-create')[0].reset();
-                        break;
-                    case 'pgRptContact':
-                        app.ContactRpt();
                         break;
                 }
             });
 
+            /** Form edit submit event */
             $('#form-edit').on('submit', function (e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
 
                 var storeage = getStorageRec('form-edit');
 
-                app.updateStorage(storeage);
-                $.mobile.changePage('#home');
+                var formValid = validateForm(storeage, 'form-edit');
+
+                if (formValid) {
+                    app.updateStorage(storeage);
+                    $.mobile.changePage('#home');
+                }
             });
 
+            /** Form create submit event */
             $('#form-create').on('submit', function (e) {
                 e.preventDefault();
                 var storeage = getStorageRec('form-create');
 
-                app.addStorage(storeage);
+                var formValid = validateForm(storeage, 'form-create');
+
+                if (formValid) {
+                    app.addStorage(storeage);
+                }
             });
 
+            /** Delete button handle */
             $('#btn-delete').on('click', function (e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
 
-                var id = $('#form-detail #txtId').val();
+                var id = $('#form-edit #txtId').val();
 
                 var storeage = {
                     Id: id
@@ -103,6 +118,8 @@ $(function () {
                 app.deleteStorage(storeage);
                 $.mobile.changePage('#home');
             });
+
+            /**-- End Binding page event -- */
         },
         createSQLTable: function () {
             var tblStructure = {};
@@ -124,14 +141,12 @@ $(function () {
             $.when(SqlGetRecords(dbContext, tblStorage, "Id")).done(function (data) {
 
                 // Clean table
-                $('#listing-table tbody tr').remove();
+                $('#listing-table tbody').remove();
 
-                // return json object of all records
                 list = ResultSetToJSON(data, "Id");
 
                 var newRows = '';
 
-                // Check list records is empty                 
                 if (!$.isEmptyObject(list)) {
 
                     for (var n in list) {
@@ -150,7 +165,7 @@ $(function () {
                         newRows += eachRow;
                     }
                 } else {
-                    newRows = 'No record found';
+                    newRows = '<tr><td colspan="4">No record found</td></tr>';
                 }
 
                 $('#listing-table').append(newRows);
@@ -162,23 +177,16 @@ $(function () {
         addStorage: function (Storage) {
             $.when(SqlInsertRecord(dbContext, tblStorage, Storage)).done(function (dta) {
 
-                if (dta) {
-                    // Change view to "Detail page"
-                    $('#detail').data('id', dta.insertId);
-                    $.mobile.changePage('#detail');
-                } else {
-                    $.mobile.changePage('#home');
-                }
-
                 alert('Insert completed');
+
+                $.mobile.changePage('#home');
+
             }).fail(function (err) {
                 alert('Error. Function addStorage()');
                 return;
             });
         },
         detailStorage: function (Storage, formId) {
-
-            console.log(Storage);
 
             // Get detail Storage
             $.when(SqlGetRecordWhere(dbContext, tblStorage, Storage)).done(function (dta) {
@@ -191,10 +199,18 @@ $(function () {
                     return;
                 }
                 $('#' + formId + ' #txtId').val(obj.Id);
-                $('#' + formId + ' #txtType').val(obj.Type);
+
+                // JQM Set selected value
+                $('#' + formId + ' #ddlType').val(obj.Type).attr('selected', true).siblings('option').removeAttr('selected');
+                $('#' + formId + ' #ddlType').selectmenu("refresh", true);
+
                 $('#' + formId + ' #txtAcreage').val(obj.Acreage);
                 $('#' + formId + ' #txtPrice').val(obj.Price);
-                $('#' + formId + ' #txtFeature').val(obj.Features);
+
+                // JQM Set selected value               
+                $('#' + formId + ' #ddlFeature').val(obj.Features).attr('selected', true).siblings('option').removeAttr('selected');
+                $('#' + formId + ' #ddlFeature').selectmenu("refresh", true);
+
                 $('#' + formId + ' #txtCreatedDate').val(obj.CreatedDate);
                 $('#' + formId + ' #txtNotes').val(obj.Notes);
                 $('#' + formId + ' #txtReporter').val(obj.Reporter);
@@ -226,10 +242,10 @@ $(function () {
 
     function getStorageRec(formId) {
         var Storage = {
-            Type: $('#' + formId + ' #txtType').val(),
+            Type: $('#' + formId + ' #ddlType > option:selected').val(),
             Acreage: $('#' + formId + ' #txtAcreage').val(),
             CreatedDate: $('#' + formId + ' #txtCreatedDate').val(),
-            Features: $('#' + formId + ' #txtFeature').val(),
+            Features: $('#' + formId + ' #ddlFeature > option:selected').val(),
             Price: $('#' + formId + ' #txtPrice').val(),
             Notes: $('#' + formId + ' #txtNotes').val(),
             Reporter: $('#' + formId + ' #txtReporter').val()
@@ -242,16 +258,55 @@ $(function () {
         return Storage;
     }
 
-    function dateFormat(date) {
-        var from = date.split("/")
-        var createdDate = new Date(from[2], from[1] - 1, from[0]);
+    function validateForm(storeage, formId) {
+        var isValid = true;
 
-        var day = ("0" + createdDate.getDate()).slice(-2);
-        var month = ("0" + (createdDate.getMonth() + 1)).slice(-2);
-        var res = createdDate.getFullYear() + "-" + (month) + "-" + (day);
-        return res;
+        if (!storeage.Type) {
+            isValid = false;
+            $('#' + formId + ' #ddlType').focus();
+            alert('Field Type is required');
+            return isValid;
+        }
+
+        if (!storeage.Features) {
+            isValid = false;
+            $('#' + formId + ' #ddlFeature').focus();
+            alert('Field Features is required');
+            return isValid;
+        }
+
+        if (!storeage.Acreage) {
+            isValid = false;
+            $('#' + formId + ' #txtAcreage').focus();
+            alert('Field Acreage is required');
+            return isValid;
+        }
+
+        if (!storeage.Price) {
+            isValid = false;
+            $('#' + formId + ' #txtPrice').focus();
+            alert('Field Price is required');
+            return isValid;
+        }
+
+        if (!storeage.CreatedDate) {
+            isValid = false;
+            $('#' + formId + ' #txtCreatedDate').focus();
+            alert('Created Date is required');
+            return isValid;
+        }
+
+        if (!storeage.Reporter) {
+            isValid = false;
+            $('#' + formId + ' #txtReporter').focus();
+            alert('Reporter is required');
+            return isValid;
+        }
+
+        return isValid;
     }
 
+    /** App initialize */
     document.addEventListener("deviceready", onDeviceReady, false);
 
     function onDeviceReady() {
