@@ -13,6 +13,11 @@
     <meta name="author" content="Tien Dung">
     <title>My Storage</title>
     <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+    <style>
+        .ui-field-contain label span {
+            color: red
+        }
+    </style>
 </head>
 
 <body>
@@ -73,33 +78,38 @@
             <div>
                 <h3>Edit storeage</h3>
             </div>
-            <form action="">
+            <form id="form-edit">
                 <input type="hidden" id="txtId" value="">
                 <div>
                     <div class="ui-field-contain">
-                        <label>Type:</label>
-                        <input type="text" id="txtType" value="">
+                        <label>Type<span>(*)</span>:</label>
+                        <input type="text" id="txtType" value="" required placeholder="home, business,..."
+                            oninvalid="this.setCustomValidity('Types is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
                 <div>
                     <div class="ui-field-contain">
-                        <label>Feature:</label>
-                        <input type="text" id="txtFeature" value="">
+                        <label>Feature<span>(*)</span>:</label>
+                        <input type="text" id="txtFeature" value="" required
+                            placeholder="private space, sharing space,..."
+                            oninvalid="this.setCustomValidity('Feature is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
                 <div>
                     <div class="ui-field-contain">
-                        <label>Acreage:</label>
-                        <input type="number" step="0.1" id="txtAcreage" value="">
+                        <label>Acreage<span>(*)</span>:</label>
+                        <input type="number" step="0.1" id="txtAcreage" value="" required placeholder="100"
+                            oninvalid="this.setCustomValidity('Acreage is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
                 <div>
                     <div class="ui-field-contain">
-                        <label>Price:</label>
-                        <input type="number" step="0.1" id="txtPrice" value="">
+                        <label>Price<span>(*)</span>:</label>
+                        <input type="number" step="0.1" id="txtPrice" value="" required placeholder="100"
+                            oninvalid="this.setCustomValidity('Price is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
                 <div>
@@ -116,15 +126,15 @@
                 </div>
                 <div>
                     <div class="ui-field-contain">
-                        <label>Reporter:</label>
-                        <input type="text" id="txtReporter" value="">
+                        <label>Reporter<span>(*)</span>:</label>
+                        <input type="text" id="txtReporter" value="" required placeholder="admin"
+                            oninvalid="this.setCustomValidity('Reporter is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
-            </form>
-
-            <div class="ui-field-contain">    
-                    <button type="submit" id="btn-update" class="ui-shadow ui-btn ui-corner-all">Update</button>
-            </div>
+                <div class="ui-field-contain">    
+                        <button type="submit" id="btn-update" class="ui-shadow ui-btn ui-corner-all">Update</button>
+                </div>
+            </form>            
         </div><!-- /content -->
 
         <div data-role="footer">
@@ -145,33 +155,38 @@
             <div>
                 <h3>Create new storeage</h3>
             </div>
-            <form action="">
+            <form id="form-create">
                 <input type="hidden" id="txtId" value="">
                 <div>
                     <div class="ui-field-contain">
-                        <label>Type:</label>
-                        <input type="text" id="txtType" value="" required>
+                        <label>Type<span>(*)</span>:</label>
+                        <input type="text" id="txtType" value="" required placeholder="home, business,..."
+                            oninvalid="this.setCustomValidity('Types is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
                 <div>
                     <div class="ui-field-contain">
-                        <label>Feature:</label>
-                        <input type="text" id="txtFeature" value="">
+                        <label>Feature<span>(*)</span>:</label>
+                        <input type="text" id="txtFeature" value="" required
+                            placeholder="private space, sharing space,..."
+                            oninvalid="this.setCustomValidity('Feature is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
                 <div>
                     <div class="ui-field-contain">
-                        <label>Acreage:</label>
-                        <input type="number" step="0.1" id="txtAcreage" value="">
+                        <label>Acreage<span>(*)</span>:</label>
+                        <input type="number" step="0.1" id="txtAcreage" value="" required placeholder="100"
+                            oninvalid="this.setCustomValidity('Acreage is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
 
                 <div>
                     <div class="ui-field-contain">
-                        <label>Price:</label>
-                        <input type="number" step="0.1" id="txtPrice" value="">
+                        <label>Price<span>(*)</span>:</label>
+                        <input type="number" step="0.1" id="txtPrice" value="" required placeholder="100"
+                            oninvalid="this.setCustomValidity('Price is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
                 <div>
@@ -188,15 +203,17 @@
                 </div>
                 <div>
                     <div class="ui-field-contain">
-                        <label>Reporter:</label>
-                        <input type="text" id="txtReporter" value="">
+                        <label>Reporter<span>(*)</span>:</label>
+                        <input type="text" id="txtReporter" value="" required placeholder="admin"
+                            oninvalid="this.setCustomValidity('Reporter is required!')" oninput="setCustomValidity('')">
                     </div>
+                </div>
+                <div class="ui-field-contain">    
+                        <button type="submit" id="btn-create" class="ui-shadow ui-btn ui-corner-all">Create</button>
                 </div>
             </form>
 
-            <div class="ui-field-contain">    
-                    <button type="submit" id="submit-5" class="ui-shadow ui-btn ui-corner-all">Create</button>
-            </div>
+
         </div><!-- /content -->
 
         <div data-role="footer">

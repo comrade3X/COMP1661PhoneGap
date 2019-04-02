@@ -18,14 +18,6 @@ $(function () {
             // Create SQL table
             this.createSQLTable();
 
-            // Insert sample record;
-            // var storegae = getStorageRec();
-            // this.addStorage(storegae);
-           
-            // // Delete
-            // this.deleteStorage(storegae2);
-            // console.log('app processing init...');
-
             this.getStorages();
 
             $(document).on('click', '#listing-table a', function (e) {
@@ -52,19 +44,44 @@ $(function () {
                     case 'home':
                         app.getStorages();
                         break;
+                    case 'create':
+                        $('#form-create')[0].reset();
+                        break;
                     case 'pgRptContact':
                         app.ContactRpt();
                         break;
                 }
             });
 
-            $('#btn-update').on('click', function (e) {
+            $('#form-edit').on('submit', function (e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
 
-                var storeage = getStorageRec();             
-               
+                var storeage = getStorageRec('form-edit');
+
                 app.updateStorage(storeage);
+                $.mobile.changePage('#home');
+            });
+
+            $('#form-create').on('submit', function (e) {
+                e.preventDefault();
+                var storeage = getStorageRec('form-create');
+
+                app.addStorage(storeage);
+                $.mobile.changePage('#home');
+            });
+
+            $('#btn-delete').on('click', function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                var id = $('#form-edit #txtId').val();
+
+                var storeage = {
+                    Id: id
+                };
+
+                app.deleteStorage(storeage);
                 $.mobile.changePage('#home');
             });
         },
@@ -125,9 +142,9 @@ $(function () {
         },
         addStorage: function (Storage) {
             $.when(SqlInsertRecord(dbContext, tblStorage, Storage)).done(function (dta) {
-                console.log('Insert completed');
+                alert('Insert completed');
             }).fail(function (err) {
-                alert('Error. Function detailStorage()');
+                alert('Error. Function addStorage()');
                 return;
             });
         },
@@ -147,8 +164,7 @@ $(function () {
                 $('#txtAcreage').val(obj.Acreage);
                 $('#txtPrice').val(obj.Price);
                 $('#txtFeature').val(obj.Features);
-                var createdDate = dateFormat(obj.CreatedDate);
-                $('#txtCreatedDate').val(createdDate);
+                $('#txtCreatedDate').val(obj.CreatedDate);
                 $('#txtNotes').val(obj.Notes);
                 $('#txtReporter').val(obj.Reporter);
 
@@ -177,16 +193,19 @@ $(function () {
         }
     };
 
-    function getStorageRec() {
+    function getStorageRec(formId) {
         var Storage = {
-            Id: $('#txtId').val(),
-            Type: $('#txtType').val(),
-            Acreage: $('#txtAcreage').val(),
-            CreatedDate: $('#txtCreatedDate').val(),
-            Features: $('#txtFeature').val(),
-            Price: $('#txtPrice').val(),
-            Notes: $('#txtNotes').val(),
-            Reporter: $('#txtReporter').val()
+            Type: $('#' + formId + ' #txtType').val(),
+            Acreage: $('#' + formId + ' #txtAcreage').val(),
+            CreatedDate: $('#' + formId + ' #txtCreatedDate').val(),
+            Features: $('#' + formId + ' #txtFeature').val(),
+            Price: $('#' + formId + ' #txtPrice').val(),
+            Notes: $('#' + formId + ' #txtNotes').val(),
+            Reporter: $('#' + formId + ' #txtReporter').val()
+        }
+
+        if (formId === 'form-edit') {
+            Storage.Id = $('#' + formId + ' #txtId').val();
         }
 
         return Storage;
@@ -205,6 +224,7 @@ $(function () {
     document.addEventListener("deviceready", onDeviceReady, false);
 
     function onDeviceReady() {
+        console.log(navigator.vibrate);
         app.init();
     }
 });
