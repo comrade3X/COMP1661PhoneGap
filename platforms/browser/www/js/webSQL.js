@@ -112,6 +112,7 @@ function SqlInsertRecord(db, tblName, tblRecord) {
     }
     flds = Left(flds, Len(flds) - 1);
     vals = Left(vals, Len(vals) - 1);
+    
     qry = "INSERT INTO [" + tblName + "] (" + flds + ") VALUES (" + vals + ");";
     return Execute(db, qry, avals);
 }
@@ -192,6 +193,7 @@ function successWrapper(d) {
 function failureWrapper(d) {
     // when sql query fails
     return (function (tx, error) {
+        console.log(error);
         d.reject(error)
     })
 };

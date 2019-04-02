@@ -18,26 +18,33 @@ $(function () {
             // Create SQL table
             this.createSQLTable();
 
-            // Insert sample record;
-            // var storegae = getStorageRec();
-            // this.addStorage(storegae);
-           
-            // // Delete
-            // this.deleteStorage(storegae2);
-            // console.log('app processing init...');
-
             this.getStorages();
 
+            // Listing click event
+            // Redirect to "Detail page"
             $(document).on('click', '#listing-table a', function (e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
 
                 //get href of selected listview item and cleanse it
-                var param = $(this).data('id');
+                var id = $(this).data('id');
 
+                // Change view to "Detail page"
+                $('#detail').data('id', id);
+                $.mobile.changePage('#detail');
+            });
+
+            $(document).on('click', '#redirect-edit', function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                //get href of selected listview item and cleanse it
+                var param = $('#form-detail #txtId').val();
+
+                // Change view to "Detail page"
                 $('#edit').data('id', param);
                 $.mobile.changePage('#edit');
-            });
+            });           
 
             $(document).on('pagebeforechange', function (e, data) {
                 //get "to page" name
@@ -47,10 +54,18 @@ $(function () {
                     case 'edit':
                         var id = $('#edit').data('id');
                         var storegae = { Id: id };
-                        app.detailStorage(storegae);
+                        app.detailStorage(storegae, 'form-edit');
+                        break;
+                    case 'detail':
+                        var id = $('#detail').data('id');
+                        var storegae = { Id: id };
+                        app.detailStorage(storegae, 'form-detail');
                         break;
                     case 'home':
                         app.getStorages();
+                        break;
+                    case 'create':
+                        $('#form-create')[0].reset();
                         break;
                     case 'pgRptContact':
                         app.ContactRpt();
@@ -58,13 +73,34 @@ $(function () {
                 }
             });
 
-            $('#btn-update').on('click', function (e) {
+            $('#form-edit').on('submit', function (e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
 
-                var storeage = getStorageRec();             
-               
+                var storeage = getStorageRec('form-edit');
+
                 app.updateStorage(storeage);
+                $.mobile.changePage('#home');
+            });
+
+            $('#form-create').on('submit', function (e) {
+                e.preventDefault();
+                var storeage = getStorageRec('form-create');
+
+                app.addStorage(storeage);
+            });
+
+            $('#btn-delete').on('click', function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                var id = $('#form-detail #txtId').val();
+
+                var storeage = {
+                    Id: id
+                };
+
+                app.deleteStorage(storeage);
                 $.mobile.changePage('#home');
             });
         },
@@ -125,13 +161,25 @@ $(function () {
         },
         addStorage: function (Storage) {
             $.when(SqlInsertRecord(dbContext, tblStorage, Storage)).done(function (dta) {
-                console.log('Insert completed');
+
+                if (dta) {
+                    // Change view to "Detail page"
+                    $('#detail').data('id', dta.insertId);
+                    $.mobile.changePage('#detail');
+                } else {
+                    $.mobile.changePage('#home');
+                }
+
+                alert('Insert completed');
             }).fail(function (err) {
-                alert('Error. Function detailStorage()');
+                alert('Error. Function addStorage()');
                 return;
             });
         },
-        detailStorage: function (Storage) {
+        detailStorage: function (Storage, formId) {
+
+            console.log(Storage);
+
             // Get detail Storage
             $.when(SqlGetRecordWhere(dbContext, tblStorage, Storage)).done(function (dta) {
                 var list = ResultSetToJSON(dta, "Id");
@@ -142,15 +190,14 @@ $(function () {
                     alert('Error Function detailStorage(): record not found');
                     return;
                 }
-                $('#txtId').val(obj.Id);
-                $('#txtType').val(obj.Type);
-                $('#txtAcreage').val(obj.Acreage);
-                $('#txtPrice').val(obj.Price);
-                $('#txtFeature').val(obj.Features);
-                var createdDate = dateFormat(obj.CreatedDate);
-                $('#txtCreatedDate').val(createdDate);
-                $('#txtNotes').val(obj.Notes);
-                $('#txtReporter').val(obj.Reporter);
+                $('#' + formId + ' #txtId').val(obj.Id);
+                $('#' + formId + ' #txtType').val(obj.Type);
+                $('#' + formId + ' #txtAcreage').val(obj.Acreage);
+                $('#' + formId + ' #txtPrice').val(obj.Price);
+                $('#' + formId + ' #txtFeature').val(obj.Features);
+                $('#' + formId + ' #txtCreatedDate').val(obj.CreatedDate);
+                $('#' + formId + ' #txtNotes').val(obj.Notes);
+                $('#' + formId + ' #txtReporter').val(obj.Reporter);
 
             }).fail(function (err) {
                 alert('Error. Function detailStorage()');
@@ -177,16 +224,19 @@ $(function () {
         }
     };
 
-    function getStorageRec() {
+    function getStorageRec(formId) {
         var Storage = {
-            Id: $('#txtId').val(),
-            Type: $('#txtType').val(),
-            Acreage: $('#txtAcreage').val(),
-            CreatedDate: $('#txtCreatedDate').val(),
-            Features: $('#txtFeature').val(),
-            Price: $('#txtPrice').val(),
-            Notes: $('#txtNotes').val(),
-            Reporter: $('#txtReporter').val()
+            Type: $('#' + formId + ' #txtType').val(),
+            Acreage: $('#' + formId + ' #txtAcreage').val(),
+            CreatedDate: $('#' + formId + ' #txtCreatedDate').val(),
+            Features: $('#' + formId + ' #txtFeature').val(),
+            Price: $('#' + formId + ' #txtPrice').val(),
+            Notes: $('#' + formId + ' #txtNotes').val(),
+            Reporter: $('#' + formId + ' #txtReporter').val()
+        }
+
+        if (formId === 'form-edit') {
+            Storage.Id = $('#' + formId + ' #txtId').val();
         }
 
         return Storage;

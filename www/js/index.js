@@ -27,12 +27,24 @@ $(function () {
                 e.stopImmediatePropagation();
 
                 //get href of selected listview item and cleanse it
-                var param = $(this).data('id');
+                var id = $(this).data('id');
 
                 // Change view to "Detail page"
-                $('#detail').data('id', param);
+                $('#detail').data('id', id);
                 $.mobile.changePage('#detail');
             });
+
+            $(document).on('click', '#redirect-edit', function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                //get href of selected listview item and cleanse it
+                var param = $('#form-detail #txtId').val();
+
+                // Change view to "Detail page"
+                $('#edit').data('id', param);
+                $.mobile.changePage('#edit');
+            });           
 
             $(document).on('pagebeforechange', function (e, data) {
                 //get "to page" name
@@ -76,22 +88,20 @@ $(function () {
                 var storeage = getStorageRec('form-create');
 
                 app.addStorage(storeage);
-                $.mobile.changePage('#home');
             });
 
             $('#btn-delete').on('click', function (e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
 
-                // var id = $('#form-detail #txtId').val();
+                var id = $('#form-detail #txtId').val();
 
-                // var storeage = {
-                //     Id: id
-                // };
+                var storeage = {
+                    Id: id
+                };
 
-                // app.deleteStorage(storeage);
-                // $.mobile.changePage('#home');
-                
+                app.deleteStorage(storeage);
+                $.mobile.changePage('#home');
             });
         },
         createSQLTable: function () {
@@ -151,7 +161,15 @@ $(function () {
         },
         addStorage: function (Storage) {
             $.when(SqlInsertRecord(dbContext, tblStorage, Storage)).done(function (dta) {
-                console.log(dta);
+
+                if (dta) {
+                    // Change view to "Detail page"
+                    $('#detail').data('id', dta.insertId);
+                    $.mobile.changePage('#detail');
+                } else {
+                    $.mobile.changePage('#home');
+                }
+
                 alert('Insert completed');
             }).fail(function (err) {
                 alert('Error. Function addStorage()');
@@ -159,13 +177,14 @@ $(function () {
             });
         },
         detailStorage: function (Storage, formId) {
+
+            console.log(Storage);
+
             // Get detail Storage
             $.when(SqlGetRecordWhere(dbContext, tblStorage, Storage)).done(function (dta) {
                 var list = ResultSetToJSON(dta, "Id");
 
                 var obj = list[Storage.Id];
-
-                console.log(obj);
 
                 if (!obj) {
                     alert('Error Function detailStorage(): record not found');
@@ -236,7 +255,6 @@ $(function () {
     document.addEventListener("deviceready", onDeviceReady, false);
 
     function onDeviceReady() {
-        navigator.notification.beep(2);
         app.init();
     }
 });

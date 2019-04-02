@@ -70,8 +70,6 @@
         <div data-role="header">
             <h2>My Storage</h2>
             <a href="#home" class="ui-btn ui-btn-left ui-shadow ui-corner-all ui-icon-carat-l ui-btn-icon-notext"></a>
-            <button id="btn-delete"
-                class="ui-btn ui-icon-delete ui-btn-icon-left ui-btn-right ui-shadow-icon ui-btn-b">Delete</button>
         </div>
 
         <div role="main" class="ui-content">
@@ -239,7 +237,7 @@
                 <div>
                     <div class="ui-field-contain">
                         <label>Type<span>(*)</span>:</label>
-                        <input type="text" id="txtType" value="" required placeholder="home, business,..."
+                        <input type="text" id="txtType" value="" required placeholder="home, business,..." readonly
                             oninvalid="this.setCustomValidity('Types is required!')" oninput="setCustomValidity('')">
                     </div>
                 </div>
@@ -288,7 +286,7 @@
                     </div>
                 </div>
                 <div class="ui-field-contain">    
-                    <button type="button" class="ui-btn ui-icon-edit ui-btn-icon-left">Edit</button>
+                    <button type="button" id="redirect-edit" class="ui-btn ui-icon-edit ui-btn-icon-left">Edit</button>
                     <button type="button" id="btn-delete" class="ui-btn ui-icon-delete ui-btn-icon-left">Delete</button>
                 </div>
             </form>
