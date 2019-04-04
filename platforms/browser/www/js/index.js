@@ -77,7 +77,7 @@ $(function () {
                 }
             });
 
-            /** Form edit submit event */
+            /** Form edit - submit event */
             $('#form-edit').on('submit', function (e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
@@ -92,7 +92,7 @@ $(function () {
                 }
             });
 
-            /** Form create submit event */
+            /** Form create - submit event */
             $('#form-create').on('submit', function (e) {
                 e.preventDefault();
                 var storeage = getStorageRec('form-create');
@@ -312,6 +312,30 @@ $(function () {
     function onDeviceReady() {
         app.init();
     }
+
+    function showConfirmDialog() {
+        navigator.notification.confirm(
+            'Press "Bell" button to take the bell, and "Vibrate" button to take vibrate!', onConfirm,
+            'Ring a bell',
+            'Vibrate'
+        );
+    }
+
+    function onConfirm(button) {
+        if (button == 1) {
+            vibrate();
+        } else {
+            beep();
+        }
+    }
+
+    function beep() {
+        navigator.notification.beep(1);
+    }
+    function vibrate() {
+        navigator.notification.vibrate(1000);
+    }
+
 });
 
 
