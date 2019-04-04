@@ -321,6 +321,7 @@ $(function () {
         navigator.notification.confirm(
             'Press "Bell" button to take the bell, and "Vibrate" button to take vibrate!',
             onConfirm,
+            'Select a function', 
             ['Ring a bell', 'Vibrate']
         );
     }
