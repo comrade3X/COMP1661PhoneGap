@@ -312,35 +312,6 @@ $(function () {
     function onDeviceReady() {
         app.init();
     }
-
-    $('#test123').on('click', function () {
-        showConfirmDialog();
-    });
-
-    function showConfirmDialog() {
-        navigator.notification.confirm(
-            'Press "Bell" button to take the bell, and "Vibrate" button to take vibrate!',
-            onConfirm,
-            'Select a function', 
-            ['Ring a bell', 'Vibrate']
-        );
-    }
-
-    function onConfirm(button) {
-        if (button == 1) {
-            vibrate();
-        } else {
-            beep();
-        }
-    }
-
-    function beep() {
-        navigator.notification.beep(1);
-    }
-    function vibrate() {
-        navigator.notification.vibrate(1000);
-    }
-
 });
 
 
