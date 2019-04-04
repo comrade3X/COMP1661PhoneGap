@@ -310,8 +310,12 @@ $(function () {
     document.addEventListener("deviceready", onDeviceReady, false);
 
     function onDeviceReady() {
-        app.init();
+        app.init();       
     }
+
+    $('#test123').on('click',function(){
+        showConfirmDialog();
+    });
 
     function showConfirmDialog() {
         navigator.notification.confirm(
