@@ -310,18 +310,18 @@ $(function () {
     document.addEventListener("deviceready", onDeviceReady, false);
 
     function onDeviceReady() {
-        app.init();       
+        app.init();
     }
 
-    $('#test123').on('click',function(){
+    $('#test123').on('click', function () {
         showConfirmDialog();
     });
 
     function showConfirmDialog() {
         navigator.notification.confirm(
-            'Press "Bell" button to take the bell, and "Vibrate" button to take vibrate!', onConfirm,
-            'Ring a bell',
-            'Vibrate'
+            'Press "Bell" button to take the bell, and "Vibrate" button to take vibrate!',
+            onConfirm,
+            ['Ring a bell', 'Vibrate']
         );
     }
 
