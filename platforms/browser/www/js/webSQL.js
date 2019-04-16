@@ -6,18 +6,7 @@ var DB_TEXT = "TEXT";
 var DB_FLOAT = "FLOAT";
 var DB_NUMERIC = "NUMERIC";
 
-function Split(str, del) {
-    // split a string into an array
-    if (!del || del === null || del === "") {
-        del = " ";
-    }
-    if (del !== "") {
-        return str.split(del);
-    }
-}
-
-function Left(str, n) {
-    // return a left part of a string
+function Left(str, n) {    
     var s = str + '';
     var iLen = s.length;
     if (n <= 0) {
@@ -29,8 +18,7 @@ function Left(str, n) {
     }
 }
 
-function Len(str) {
-    // return the length of a string
+function Len(str) {    
     if (typeof (str) === 'object') {
         return str.length;
     }
@@ -38,9 +26,7 @@ function Len(str) {
     return str.length;
 }
 
-function SqlOpenDb(shortName, version, displayName, maxSize) {
-    // code to open the database and returns a variable, one can open different
-    // databases, database size is 1MB, increase dbsize to <= 5
+function SqlOpenDb(shortName, version, displayName, maxSize) {    
     var db, dbsize = 1;
     try {
         if (!window.openDatabase) {
@@ -60,14 +46,9 @@ function SqlOpenDb(shortName, version, displayName, maxSize) {
     return db;
 }
 
-function SqlExecute(db, sqlList) {
-    // code to execute array commands to the database
-    // db is the variable holding the database reference
-    // sqlList is an array of commands to execute
-    db.transaction(function (transaction) {
-        // loop through each sql command with success and error result
-        for (var i = 0; i < sqlList.length; i++) {
-            // create a new scope that holds sql for the error message, if needed
+function SqlExecute(db, sqlList) {    
+    db.transaction(function (transaction) {        
+        for (var i = 0; i < sqlList.length; i++) {            
             (function (tx, sql) {
                 if (typeof (sql) === 'string') sql = [sql];
                 if (typeof (sql[1]) === 'string') sql[1] = [sql[1]];
@@ -80,10 +61,7 @@ function SqlExecute(db, sqlList) {
     });
 }
 
-function SqlCreateTable(db, TableName, FieldsAndTypes, PrimaryKey, AutoIncrement) {
-    // code to create a table in the websql database
-    // fieldsandtypes is a json object
-    // autoincrement is the field name to autoincrement
+function SqlCreateTable(db, TableName, FieldsAndTypes, PrimaryKey, AutoIncrement) {    
     var sb = "(";
     for (item in FieldsAndTypes) {
         sb += "[" + item + "] " + FieldsAndTypes[item];
@@ -101,9 +79,7 @@ function SqlCreateTable(db, TableName, FieldsAndTypes, PrimaryKey, AutoIncrement
     return Execute(db, sb);
 }
 
-function SqlInsertRecord(db, tblName, tblRecord) {
-    // code to insert a record into the database
-    // fields are passed as parameters
+function SqlInsertRecord(db, tblName, tblRecord) {    
     var qry, flds = "", vals = "", avals = [];
     for (var key in tblRecord) {
         flds += "[" + key + "],";
@@ -117,9 +93,7 @@ function SqlInsertRecord(db, tblName, tblRecord) {
     return Execute(db, qry, avals);
 }
 
-function SqlUpdateRecordWhere(db, tblName, tblRecord, tblWhere) {
-    // code to update a record on a database
-    // tblRecord and tblWhere should be objects
+function SqlUpdateRecordWhere(db, tblName, tblRecord, tblWhere) {    
     var qry = "", vals = "", wvals = "", avals = [];
     for (item in tblRecord) {
         vals += "[" + item + "] = ?,";
@@ -135,22 +109,18 @@ function SqlUpdateRecordWhere(db, tblName, tblRecord, tblWhere) {
     return Execute(db, qry, avals);
 }
 
-function SqlGetRecordWhere(db, tblName, tblWhere) {
-    // code to get a record from database using a where clause
-    // tblWhere should be objects
+function SqlGetRecordWhere(db, tblName, tblWhere) {    
     var qry = "", vals = "", avals = [];
     for (item in tblWhere) {
         vals += "[" + item + "] = ? AND ";
         avals.push(tblWhere[item]);
     }
     vals = Left(vals, Len(vals) - 5);
-    qry = "SELECT * FROM [" + tblName + "] WHERE " + vals + ";";
+    qry = "SELECT * FROM [" + tblName + "] WHERE " + vals + ";";   
     return Execute(db, qry, avals);
 }
 
-function SqlUpdateRecords(db, tblName, tblRecord) {
-    // update all records of the table
-    // using parameter values
+function SqlUpdateRecords(db, tblName, tblRecord) {    
     var vals = "", avals = [];
     for (item in tblRecord) {
         vals = vals + "[" + item + "] = ?,";
@@ -161,8 +131,7 @@ function SqlUpdateRecords(db, tblName, tblRecord) {
     return Execute(db, qry, avals);
 }
 
-function Execute(db, qry, args) {
-    // execute a query against the database using defer
+function Execute(db, qry, args) {   
     if (typeof (args) === 'undefined') args = [];
     return $.Deferred(function (d) {
         db.transaction(function (tx) {
@@ -171,59 +140,46 @@ function Execute(db, qry, args) {
     });
 };
 
-function SqlGetRecords(db, TableName, PrimaryKey) {
-    // return all records from a table ordered by primary key
+function SqlGetRecords(db, TableName, PrimaryKey) {    
     var qry = "SELECT * FROM [" + TableName + "] ORDER BY [" + PrimaryKey + "]";
     return Execute(db, qry);
 };
 
-function SqlGetDistinctField(db, TableName, FldName) {
-    // return distinct records from a table
+function SqlGetDistinctField(db, TableName, FldName) {    
     var qry = "SELECT DISTINCT [" + FldName + "] FROM [" + TableName + "] ORDER BY [" + FldName + "]";
     return Execute(db, qry);
 };
 
-function successWrapper(d) {
-    // when sql query succeeds
+function successWrapper(d) {    
     return (function (tx, data) {
         d.resolve(data)
     })
 };
 
-function failureWrapper(d) {
-    // when sql query fails
+function failureWrapper(d) {   
     return (function (tx, error) {
         console.log(error);
         d.reject(error)
     })
 };
 
-function ResultSetToJSON(results, PrimaryKey) {
-    // process data returned by successWrapper;
-    // return it as a json object using primary key as key
+function ResultSetToJSON(results, PrimaryKey) {  
     var Records = {};
-    var len = results.rows.length - 1, priKey, i, row;
-    // loop through each row
-    for (i = 0; i <= len; i++) {
-        // get the row
-        row = results.rows.item(i);
-        // get the primary key
-        priKey = row[PrimaryKey];       
-        // set row to object using primary key
+    var len = results.rows.length - 1, priKey, i, row;   
+    for (i = 0; i <= len; i++) {       
+        row = results.rows.item(i);        
+        priKey = row[PrimaryKey];           
         Records[priKey] = row;
     }
     return Records;
 }
 
-function SqlDeleteRecordWhere(db, tblName, tblWhere) {
-    // delete a record from a table using a where clause
-    // pass the where fields as parameters
+function SqlDeleteRecordWhere(db, tblName, tblWhere) {  
     var qry, wvals = "", avals = [];
     for (item in tblWhere) {
         wvals += "[" + item + "] = ? AND ";
         avals.push(tblWhere[item]);
-    }
-    // remove last ' AND '
+    }   
     wvals = Left(wvals, Len(wvals) - 5);
     qry = "DELETE FROM [" + tblName + "] WHERE " + wvals + ";";
     return Execute(db, qry, avals);

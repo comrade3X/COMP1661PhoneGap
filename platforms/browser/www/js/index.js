@@ -100,7 +100,12 @@ $(function () {
                 var formValid = validateForm(storeage, 'form-create');
 
                 if (formValid) {
-                    app.addStorage(storeage);
+                    var duplicateObj = {
+                        Type: storeage.Type,
+                        Features: storeage.Features,
+                    }
+
+                    app.addStorage(storeage, duplicateObj);
                 }
             });
 
@@ -174,17 +179,34 @@ $(function () {
                 alert('Error. Function getStorages()');
             });
         },
-        addStorage: function (Storage) {
-            $.when(SqlInsertRecord(dbContext, tblStorage, Storage)).done(function (dta) {
+        addStorage: function (Storage, dupdateObj) {
 
-                alert('Insert completed');
+            // Check duplicate record by Type and Feature
+            $.when(SqlGetRecordWhere(dbContext, tblStorage, dupdateObj)).done(function (dta) {
+                var isFound = dta.rows.length > 0;
+                if (isFound) {
+                    $('#popupDuplicate').popup('open');
+                    $('#duplicate-message').html('A record with Type: "' + dupdateObj.Type + '" and Feature: "' + dupdateObj.Features + '" was found! <br/> Please select other Type or Feature!');
+                    return;
+                }
 
-                $.mobile.changePage('#home');
+                // Insert new record if not duplicate
+                $.when(SqlInsertRecord(dbContext, tblStorage, Storage)).done(function (dta) {
 
+                    alert('Insert completed');
+
+                    $.mobile.changePage('#home');
+
+                }).fail(function (err) {
+                    alert('Error. Function addStorage()');
+                    return;
+                });
             }).fail(function (err) {
-                alert('Error. Function addStorage()');
+                alert('Error. Function detailStorage()');
                 return;
             });
+
+
         },
         detailStorage: function (Storage, formId) {
 
